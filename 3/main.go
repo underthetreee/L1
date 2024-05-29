@@ -25,7 +25,9 @@ func main() {
 		close(result)
 	}()
 
+	sum := 0
 	for r := range result {
-		fmt.Println(r)
+		sum += r
 	}
+	fmt.Println(sum)
 }
