@@ -17,6 +17,7 @@ type Action struct {
 }
 
 func main() {
+	// Init person variable of type Action
 	person := Action{
 		Human{
 			Name:   "Alex",
@@ -24,5 +25,6 @@ func main() {
 			Gender: "male",
 		},
 	}
+	// Invoke Human method from person
 	person.Say("hello")
 }

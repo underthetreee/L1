@@ -11,6 +11,8 @@ func main() {
 	var wg sync.WaitGroup
 	result := make(chan int)
 
+	// Iterates over a slice of numbers, calling a goroutine on each iteration
+	// to send square of number to result channel
 	for _, n := range numbers {
 		wg.Add(1)
 		n := n
@@ -20,11 +22,13 @@ func main() {
 		}()
 	}
 
+	// Waits until goroutines are done, then closes result channel
 	go func() {
 		wg.Wait()
 		close(result)
 	}()
 
+	// Reads from result channel, then prints to stdout
 	for r := range result {
 		fmt.Println(r)
 	}
