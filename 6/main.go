@@ -9,10 +9,10 @@ import (
 
 func main() {
 	var wg sync.WaitGroup
+	wg.Add(3)
 
 	// Stops goroutine with empty struct channel
 	doneCh := make(chan struct{})
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		select {
@@ -26,7 +26,6 @@ func main() {
 
 	// Stops goroutine with context cancel
 	ctx, cancel := context.WithCancel(context.Background())
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		select {
@@ -38,7 +37,6 @@ func main() {
 	cancel()
 
 	// Stops goroutine with timer
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		timer := time.NewTimer(2 * time.Second)
