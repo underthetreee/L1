@@ -33,8 +33,7 @@ func main() {
 	wg := &sync.WaitGroup{}
 	for i := 0; i < *workers; i++ {
 		wg.Add(1)
-		id := i + 1
-		go worker(id, wg, dataCh, doneCh)
+		receiveData(wg, dataCh, doneCh)
 	}
 
 	// Sends random integers to channel
@@ -55,16 +54,16 @@ func genData() int {
 }
 
 // Reads data from channel and writing it to stdout
-func worker(id int, wg *sync.WaitGroup, dataCh <-chan int, doneCh <-chan struct{}) {
-	defer wg.Done()
-	for {
-		select {
-		case <-doneCh:
-			fmt.Printf("worker %d done\n", id)
-			return
-
-		case data := <-dataCh:
-			fmt.Printf("worker %d data: %d\n", id, data)
+func receiveData(wg *sync.WaitGroup, dataCh <-chan int, doneCh <-chan struct{}) {
+	go func() {
+		defer wg.Done()
+		for {
+			select {
+			case <-doneCh:
+				return
+			case data := <-dataCh:
+				fmt.Println("received", data)
+			}
 		}
-	}
+	}()
 }
